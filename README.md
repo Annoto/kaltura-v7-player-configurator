@@ -46,7 +46,6 @@ Then open **<http://127.0.0.1:8090>** in your browser.
 - **Clone into a new dedicated player** — duplicates the player first and applies
   the change to the copy, leaving the original untouched. The new player's ID is
   returned so you can use it in KMC.
-- **Plugin version** — defaults to `{latest}`; set a pinned version if needed.
 
 ## Security
 
