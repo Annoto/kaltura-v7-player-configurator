@@ -15,7 +15,7 @@
       .card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 20px; }
       h2 { font-size: 15px; margin: 0 0 12px; }
       label { display: block; font-size: 13px; font-weight: 600; margin: 12px 0 4px; }
-      input[type=text], input[type=password] { width: 100%; padding: 9px 10px; border: 1px solid #cbd2d9; border-radius: 7px; font-size: 13px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+      input[type=text], input[type=password], select { width: 100%; padding: 9px 10px; border: 1px solid #cbd2d9; border-radius: 7px; font-size: 13px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; background: #fff; }
       .row { display: flex; gap: 12px; flex-wrap: wrap; }
       .row > div { flex: 1; min-width: 200px; }
       .check { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 13px; font-weight: 600; }
@@ -79,7 +79,11 @@
           </div>
           <div>
             <label>Region</label>
-            <input id="region" type="text" value="eu" />
+            <select id="region">
+              <option value="eu" selected>eu</option>
+              <option value="us">us</option>
+              <option value="staging">staging</option>
+            </select>
           </div>
         </div>
         <div class="check">
