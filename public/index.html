@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Annoto × Kaltura — Player Configurator</title>
+    <style>
+      :root { --brand: #ea5451; --bg: #f6f7f9; --border: #e5e7eb; --muted: #6b7280; }
+      * { box-sizing: border-box; }
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; background: var(--bg); color: #1d2129; }
+      header { background: #fff; border-bottom: 1px solid var(--border); padding: 16px 24px; }
+      header h1 { font-size: 18px; margin: 0; }
+      header p { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
+      main { max-width: 880px; margin: 24px auto; padding: 0 16px; }
+      .card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+      h2 { font-size: 15px; margin: 0 0 12px; }
+      label { display: block; font-size: 13px; font-weight: 600; margin: 12px 0 4px; }
+      input[type=text], input[type=password] { width: 100%; padding: 9px 10px; border: 1px solid #cbd2d9; border-radius: 7px; font-size: 13px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+      .row { display: flex; gap: 12px; flex-wrap: wrap; }
+      .row > div { flex: 1; min-width: 200px; }
+      .check { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 13px; font-weight: 600; }
+      .check input { width: auto; }
+      .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+      .btns { margin-top: 18px; display: flex; gap: 10px; }
+      button { border: 0; border-radius: 7px; padding: 10px 18px; font-size: 14px; font-weight: 600; cursor: pointer; }
+      button.secondary { background: #eef0f3; color: #1d2129; }
+      button.primary { background: var(--brand); color: #fff; }
+      button.primary:hover { background: #d8403d; }
+      button:disabled { opacity: .5; cursor: default; }
+      pre { background: #0f172a; color: #e2e8f0; padding: 14px; border-radius: 8px; overflow: auto; font-size: 12px; line-height: 1.5; }
+      .out { display: none; }
+      .banner { padding: 10px 12px; border-radius: 7px; font-size: 13px; margin-bottom: 12px; }
+      .ok { background: #ecfdf3; color: #05603a; border: 1px solid #a6f4c5; }
+      .err { background: #fef3f2; color: #b42318; border: 1px solid #fecdca; }
+      .warn { background: #fffaeb; color: #b54708; border: 1px solid #fedf89; font-size: 12px; }
+      code { background: #eef0f3; padding: 1px 5px; border-radius: 4px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Annoto × Kaltura — Player Configurator</h1>
+      <p>Enable the Annoto plugin on a Kaltura V7 player by setting <code>confVars.versions</code> + the <code>annoto-loader</code> config via the Kaltura API.</p>
+    </header>
+
+    <main>
+      <div class="card">
+        <div class="banner warn">
+          Runs locally. Your <strong>admin secret</strong> is sent only to this local
+          server (127.0.0.1) to start a Kaltura session and is never stored. Use
+          <strong>Preview</strong> first — it changes nothing.
+        </div>
+
+        <h2>Kaltura account</h2>
+        <div class="row">
+          <div>
+            <label>Partner ID</label>
+            <input id="partnerId" type="text" placeholder="2302901" />
+          </div>
+          <div>
+            <label>Admin secret</label>
+            <input id="adminSecret" type="password" placeholder="admin secret from KMC → Integration Settings" />
+          </div>
+        </div>
+        <label>Service URL</label>
+        <input id="serviceUrl" type="text" value="https://cdnapisec.kaltura.com" />
+        <p class="hint">Default works for Kaltura SaaS. Change only for a dedicated/on-prem service URL.</p>
+
+        <h2 style="margin-top:20px">Player &amp; plugin</h2>
+        <div class="row">
+          <div>
+            <label>Player / uiConf ID</label>
+            <input id="uiConfId" type="text" placeholder="56503472" />
+          </div>
+          <div>
+            <label>Plugin version (confVars)</label>
+            <input id="version" type="text" value="{latest}" />
+          </div>
+        </div>
+        <div class="check">
+          <input id="setConfig" type="checkbox" checked />
+          <label for="setConfig" style="margin:0">Also set the plugin config (clientId / region)</label>
+        </div>
+        <div class="row" id="configRow">
+          <div>
+            <label>Annoto clientId (API key / JWT)</label>
+            <input id="clientId" type="text" placeholder="eyJhbGciOiJIUzI1NiJ9..." />
+          </div>
+          <div>
+            <label>Region</label>
+            <input id="region" type="text" value="eu" />
+          </div>
+        </div>
+        <div class="check">
+          <input id="cloneMode" type="checkbox" />
+          <label for="cloneMode" style="margin:0">Clone into a new dedicated player instead of editing this one</label>
+        </div>
+
+        <div class="btns">
+          <button class="secondary" id="previewBtn">Preview</button>
+          <button class="primary" id="applyBtn">Apply</button>
+        </div>
+      </div>
+
+      <div class="card out" id="output">
+        <h2>Result</h2>
+        <div id="resultBanner"></div>
+        <pre id="resultBody"></pre>
+      </div>
+    </main>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      function body() {
+        return {
+          serviceUrl: $('serviceUrl').value,
+          partnerId: $('partnerId').value,
+          adminSecret: $('adminSecret').value,
+          uiConfId: $('uiConfId').value,
+          version: $('version').value,
+          clientId: $('clientId').value,
+          region: $('region').value,
+          setConfig: $('setConfig').checked,
+          mode: $('cloneMode').checked ? 'clone' : 'update'
+        };
+      }
+      function show(kind, json) {
+        $('output').style.display = 'block';
+        const banner = $('resultBanner');
+        if (kind === 'ok') { banner.className = 'banner ok'; banner.textContent = 'Success'; }
+        else if (kind === 'err') { banner.className = 'banner err'; banner.textContent = 'Error'; }
+        else { banner.className = 'banner'; banner.textContent = ''; }
+        $('resultBody').textContent = JSON.stringify(json, null, 2);
+        $('output').scrollIntoView({ behavior: 'smooth' });
+      }
+      async function call(path) {
+        const btns = [$('previewBtn'), $('applyBtn')];
+        btns.forEach((b) => (b.disabled = true));
+        try {
+          const res = await fetch(path, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body())
+          });
+          const json = await res.json();
+          show(json.ok ? 'ok' : 'err', json);
+        } catch (e) {
+          show('err', { ok: false, errors: [String(e)] });
+        } finally {
+          btns.forEach((b) => (b.disabled = false));
+        }
+      }
+      $('setConfig').addEventListener('change', () => {
+        $('configRow').style.opacity = $('setConfig').checked ? '1' : '.5';
+      });
+      $('previewBtn').addEventListener('click', () => call('/api/preview'));
+      $('applyBtn').addEventListener('click', () => {
+        if (confirm('Apply changes to the player via the Kaltura API?')) call('/api/apply');
+      });
+    </script>
+  </body>
+</html>
