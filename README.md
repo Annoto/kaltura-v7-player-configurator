@@ -40,7 +40,7 @@ Annoto entries.
 
 ```sh
 # 1. Go to the project folder
-cd annoto-kaltura-configurator
+cd kaltura-v7-player-configurator
 
 # 2. Install dependencies (first time only)
 npm install
