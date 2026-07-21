@@ -42,6 +42,26 @@
       .err { background: #fdecea; color: #b3300f; border: 1px solid #f5c2b8; }
       .warn { background: #fff6df; color: #8a6d1b; border: 1px solid #ffdb80; font-size: 12px; }
       code { background: #eef0f2; padding: 1px 5px; border-radius: 4px; }
+      .rv-player { font-size: 13px; margin-bottom: 4px; }
+      .rv-title { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 14px 0 6px; }
+      .rv-row { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--border); border-left-width: 4px; border-radius: 8px; margin-top: 8px; flex-wrap: wrap; }
+      .rv-row.add { border-left-color: #38c172; background: #f2fbf6; }
+      .rv-row.diff { border-left-color: #e0a800; background: #fffdf3; }
+      .rv-row.same { border-left-color: #cbd0d6; background: #fafbfc; }
+      .rv-key { font-size: 12px; color: var(--ink); background: #eef0f2; padding: 2px 6px; border-radius: 5px; font-family: ui-monospace, Menlo, monospace; }
+      .rv-val { flex: 1; font-size: 13px; }
+      .rv-tag { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+      .rv-row.add .rv-tag { color: #1c7a43; }
+      .rv-row.diff .rv-tag { color: #97700a; }
+      .rv-row.same .rv-tag { color: var(--muted); }
+      .chip { display: inline-block; font-family: ui-monospace, Menlo, monospace; font-size: 12px; padding: 2px 8px; border-radius: 6px; margin: 2px 4px 2px 0; }
+      .chip.add { background: #e6f7ee; color: #1c7a43; }
+      .chip.same { background: #eef0f2; color: #5b6b7b; }
+      .was { text-decoration: line-through; color: var(--muted); }
+      .rv-note { font-size: 12px; color: var(--muted); margin-top: 12px; }
+      .rv-err { margin: 0; padding-left: 18px; color: #b3300f; font-size: 13px; }
+      .muted { color: var(--muted); }
+      details.raw summary { cursor: pointer; font-size: 12px; color: var(--muted); margin-top: 12px; }
     </style>
   </head>
   <body>
@@ -111,7 +131,8 @@
       <div class="card out" id="output">
         <h2>Result</h2>
         <div id="resultBanner"></div>
-        <pre id="resultBody"></pre>
+        <div id="resultView"></div>
+        <details class="raw"><summary>Raw response</summary><pre id="resultBody"></pre></details>
       </div>
     </main>
 
@@ -129,12 +150,79 @@
           mode: $('cloneMode').checked ? 'clone' : 'update'
         };
       }
-      function show(kind, json) {
+      function esc(s) {
+        return String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+      }
+      function chip(text, kind) { return '<span class="chip ' + kind + '">' + esc(text) + '</span>'; }
+
+      function renderPreview(json) {
+        const p = json.plan;
+        let h = '';
+        h += '<div class="rv-player">Player: <strong>' + esc(p.player.name || '—') + '</strong> <span class="muted">(uiConf ' + esc(p.player.id) + ')</span></div>';
+        h += '<div class="rv-title">Annoto will add / update</div>';
+
+        const cv = p.confVars;
+        const cvState = !cv.changed ? 'same' : (cv.before == null ? 'add' : 'diff');
+        const cvTag = cvState === 'add' ? 'new' : (cvState === 'diff' ? 'change' : 'already set');
+        h += '<div class="rv-row ' + cvState + '">'
+          + '<span class="rv-key">confVars.versions["' + esc(cv.pluginKey) + '"]</span>'
+          + '<span class="rv-val">' + (cvState === 'diff' ? '<span class="was">' + esc(cv.before) + '</span> ' : '') + chip(cv.after, cvState === 'same' ? 'same' : 'add') + '</span>'
+          + '<span class="rv-tag">' + cvTag + '</span></div>';
+
+        if (p.config) {
+          const cf = p.config;
+          const beforeStr = cf.before ? JSON.stringify(cf.before) : null;
+          const afterStr = JSON.stringify(cf.after);
+          const cfState = beforeStr === afterStr ? 'same' : (cf.before ? 'diff' : 'add');
+          const cfTag = cfState === 'add' ? 'new' : (cfState === 'diff' ? 'change' : 'already set');
+          let valHtml = '';
+          Object.keys(cf.after).forEach((k) => { valHtml += chip(k + ': ' + cf.after[k], cfState === 'same' ? 'same' : 'add'); });
+          h += '<div class="rv-row ' + cfState + '">'
+            + '<span class="rv-key">config.plugins["' + esc(cf.pluginKey) + '"]</span>'
+            + '<span class="rv-val">' + valHtml + '</span>'
+            + '<span class="rv-tag">' + cfTag + '</span></div>';
+        }
+        h += '<div class="rv-note">Nothing has been changed yet — click <strong>Apply</strong> to write this.</div>';
+        return h;
+      }
+
+      function renderApply(json) {
+        let h = '';
+        if (json.cloned) {
+          h += '<div class="rv-player">Created new player: <strong>' + esc(json.cloned.name || '—') + '</strong> <span class="muted">(uiConf ' + esc(json.cloned.id) + ')</span></div>';
+        } else {
+          h += '<div class="rv-player">Updated player <span class="muted">(uiConf ' + esc(json.targetId) + ')</span></div>';
+        }
+        h += '<div class="rv-title">Applied</div>';
+        h += '<div class="rv-row add"><span class="rv-key">confVars.versions["' + esc(json.applied.confVarsPluginKey) + '"]</span>'
+          + '<span class="rv-val">' + chip(json.applied.version, 'add') + '</span>'
+          + '<span class="rv-tag">' + (json.verified.versionsPresent ? '✓ verified' : 'check') + '</span></div>';
+        if (json.applied.setConfig) {
+          h += '<div class="rv-row add"><span class="rv-key">config.plugins["' + esc(json.applied.configPluginKey) + '"]</span>'
+            + '<span class="rv-val">' + chip('set', 'add') + '</span>'
+            + '<span class="rv-tag">✓</span></div>';
+        }
+        return h;
+      }
+
+      function show(json) {
         $('output').style.display = 'block';
         const banner = $('resultBanner');
-        if (kind === 'ok') { banner.className = 'banner ok'; banner.textContent = 'Success'; }
-        else if (kind === 'err') { banner.className = 'banner err'; banner.textContent = 'Error'; }
-        else { banner.className = 'banner'; banner.textContent = ''; }
+        let view = '';
+        if (!json.ok) {
+          banner.className = 'banner err';
+          banner.textContent = 'Error';
+          view = '<ul class="rv-err">' + (json.errors || ['Unknown error']).map((e) => '<li>' + esc(e) + '</li>').join('') + '</ul>';
+        } else if (json.plan) {
+          banner.className = 'banner';
+          banner.textContent = 'Preview — nothing changed yet';
+          view = renderPreview(json);
+        } else if (json.applied) {
+          banner.className = 'banner ok';
+          banner.textContent = 'Applied ✓';
+          view = renderApply(json);
+        }
+        $('resultView').innerHTML = view;
         $('resultBody').textContent = JSON.stringify(json, null, 2);
         $('output').scrollIntoView({ behavior: 'smooth' });
       }
@@ -148,9 +236,9 @@
             body: JSON.stringify(body())
           });
           const json = await res.json();
-          show(json.ok ? 'ok' : 'err', json);
+          show(json);
         } catch (e) {
-          show('err', { ok: false, errors: [String(e)] });
+          show({ ok: false, errors: [String(e)] });
         } finally {
           btns.forEach((b) => (b.disabled = false));
         }
