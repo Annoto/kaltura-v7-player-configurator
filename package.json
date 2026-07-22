@@ -1,13 +1,14 @@
 {
   "name": "annoto-kaltura-configurator",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
-  "description": "Local web tool to configure a Kaltura V7 player (uiConf) so it auto-loads the Annoto plugin — sets confVars.versions (playkit-annoto-loader) and the annoto-loader config, via the Kaltura API.",
+  "description": "Local web tool to configure a Kaltura V7 player (uiConf) so it auto-loads the Annoto plugin \u2014 sets confVars.versions (playkit-annoto-loader) and the annoto-loader config, via the Kaltura API.",
   "type": "commonjs",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node test/merge.test.js"
+    "test": "node test/merge.test.js",
+    "build:win": "node buildtools/embed-html.js && bun build --compile --target=bun-windows-x64 buildtools/entry.cjs --outfile dist/AnnotoConfigurator.exe"
   },
   "engines": {
     "node": ">=18"

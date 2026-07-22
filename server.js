@@ -19,6 +19,11 @@ const app = express();
 app.use(express.json({ limit: '1mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// When packaged as a standalone executable, the UI is embedded in the binary.
+if (global.__ANNOTO_HTML__) {
+  app.get('/', (req, res) => res.type('html').send(global.__ANNOTO_HTML__));
+}
+
 const PORT = process.env.PORT || 8090;
 const HOST = '127.0.0.1'; // local-only by design (admin secret never leaves your machine)
 
@@ -247,7 +252,42 @@ app.post('/api/apply', async (req, res) => {
   }
 });
 
-app.listen(PORT, HOST, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Annoto × Kaltura configurator running at http://${HOST}:${PORT}`);
+/** Open the user's default browser (Windows/macOS/Linux). */
+function openBrowser(url) {
+  const { exec } = require('child_process');
+  const platform = process.platform;
+  let cmd;
+  if (platform === 'win32') cmd = `start "" "${url}"`;
+  else if (platform === 'darwin') cmd = `open "${url}"`;
+  else cmd = `xdg-open "${url}"`;
+  exec(cmd, () => { /* best-effort; if it fails the console shows the URL */ });
+}
+
+const server = app.listen(PORT, HOST, () => {
+  const url = `http://${HOST}:${PORT}`;
+  /* eslint-disable no-console */
+  console.log('');
+  console.log('==============================================');
+  console.log('  Annoto x Kaltura Player Configurator');
+  console.log(`  Running at: ${url}`);
+  console.log('  Your browser should open automatically.');
+  console.log('  Keep this window open while using the tool.');
+  console.log('  Close this window to stop.');
+  console.log('==============================================');
+  console.log('');
+  openBrowser(url);
+});
+
+server.on('error', (err) => {
+  /* eslint-disable no-console */
+  if (err.code === 'EADDRINUSE') {
+    console.log('');
+    console.log(`It looks like the configurator is already running (port ${PORT} is busy).`);
+    console.log('Opening your browser to the existing one...');
+    openBrowser(`http://${HOST}:${PORT}`);
+    setTimeout(() => process.exit(0), 3000);
+  } else {
+    console.error('Failed to start:', err.message);
+    setTimeout(() => process.exit(1), 10000);
+  }
 });
