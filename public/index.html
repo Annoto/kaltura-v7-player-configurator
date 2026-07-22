@@ -18,9 +18,9 @@
       header .logo { height: 26px; display: block; }
       header .titles h1 { font-size: 17px; margin: 0; font-weight: 700; }
       header .titles p { margin: 3px 0 0; font-size: 12.5px; color: var(--muted); }
-      main { max-width: 880px; margin: 24px auto; padding: 0 16px; }
+      main { max-width: 920px; margin: 24px auto; padding: 0 16px; }
       .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 22px; margin-bottom: 20px; box-shadow: 0 1px 2px rgba(16,24,40,.04); }
-      h2 { font-size: 14px; margin: 0 0 12px; }
+      h2 { font-size: 14px; margin: 0 0 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
       label { display: block; font-size: 13px; font-weight: 500; margin: 12px 0 4px; }
       input[type=text], input[type=password], select { width: 100%; padding: 9px 11px; border: 1px solid #d4d5d9; border-radius: 8px; font-size: 13px; font-family: 'Roboto', ui-monospace, Menlo, monospace; background: #fff; color: var(--ink); }
       input:focus, select:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px rgba(234,84,81,.15); }
@@ -29,39 +29,45 @@
       .check { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 13px; font-weight: 500; }
       .check input { width: auto; accent-color: var(--brand); }
       .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
-      .btns { margin-top: 20px; display: flex; gap: 10px; }
+      .btns { margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
       button { border: 0; border-radius: 8px; padding: 10px 20px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Roboto', sans-serif; }
       button.secondary { background: #eef0f2; color: var(--ink); }
       button.primary { background: var(--brand); color: #fff; }
       button.primary:hover { background: var(--brand-dark); }
       button:disabled { opacity: .5; cursor: default; }
+      button.check-btn { background: var(--teal); color: #fff; }
+      button.check-btn:hover { background: #009694; }
       pre { background: #16181a; color: #e6e8ea; padding: 14px; border-radius: 8px; overflow: auto; font-size: 12px; line-height: 1.5; }
       .out { display: none; }
       .banner { padding: 10px 12px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; }
       .ok { background: #e9f9ef; color: #1c7a43; border: 1px solid #a6e3bd; }
       .err { background: #fdecea; color: #b3300f; border: 1px solid #f5c2b8; }
       .warn { background: #fff6df; color: #8a6d1b; border: 1px solid #ffdb80; font-size: 12px; }
-      code { background: #eef0f2; padding: 1px 5px; border-radius: 4px; }
-      .rv-player { font-size: 13px; margin-bottom: 4px; }
-      .rv-title { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 14px 0 6px; }
-      .rv-row { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--border); border-left-width: 4px; border-radius: 8px; margin-top: 8px; flex-wrap: wrap; }
-      .rv-row.add { border-left-color: #38c172; background: #f2fbf6; }
-      .rv-row.diff { border-left-color: #e0a800; background: #fffdf3; }
-      .rv-row.same { border-left-color: #cbd0d6; background: #fafbfc; }
-      .rv-key { font-size: 12px; color: var(--ink); background: #eef0f2; padding: 2px 6px; border-radius: 5px; font-family: ui-monospace, Menlo, monospace; }
-      .rv-val { flex: 1; font-size: 13px; }
-      .rv-tag { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
-      .rv-row.add .rv-tag { color: #1c7a43; }
-      .rv-row.diff .rv-tag { color: #97700a; }
-      .rv-row.same .rv-tag { color: var(--muted); }
-      .chip { display: inline-block; font-family: ui-monospace, Menlo, monospace; font-size: 12px; padding: 2px 8px; border-radius: 6px; margin: 2px 4px 2px 0; }
-      .chip.add { background: #e6f7ee; color: #1c7a43; }
-      .chip.same { background: #eef0f2; color: #5b6b7b; }
-      .was { text-decoration: line-through; color: var(--muted); }
-      .rv-note { font-size: 12px; color: var(--muted); margin-top: 12px; }
-      .rv-err { margin: 0; padding-left: 18px; color: #b3300f; font-size: 13px; }
-      .muted { color: var(--muted); }
-      details.raw summary { cursor: pointer; font-size: 12px; color: var(--muted); margin-top: 12px; }
+      .info { background: #e8f4ff; color: #0052cc; border: 1px solid #85b8ff; }
+      code { background: #eef0f2; padding: 1px 5px; border-radius: 4px; font-family: ui-monospace, Menlo, monospace; }
+      .status-box { display: none; background: #f9fafb; border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 20px; }
+      .status-box.show { display: block; }
+      .status-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-bottom: 8px; }
+      .status-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 13px; }
+      .status-item .icon { font-size: 16px; }
+      .status-item .label { flex: 1; }
+      .status-item .value { font-family: ui-monospace; font-size: 12px; background: #fff; padding: 2px 6px; border-radius: 4px; }
+      .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+      .comp-box { border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
+      .comp-header { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+      .comp-item { display: flex; align-items: flex-start; gap: 8px; padding: 8px 0; font-size: 13px; border-bottom: 1px solid #f0f0f0; }
+      .comp-item:last-child { border-bottom: none; }
+      .comp-key { font-weight: 500; font-family: ui-monospace; font-size: 12px; white-space: nowrap; color: var(--muted); }
+      .comp-value { flex: 1; word-break: break-all; }
+      .comp-value.empty { color: var(--muted); font-style: italic; }
+      .comp-value.new { background: #e6f7ee; padding: 2px 6px; border-radius: 4px; color: #1c7a43; }
+      .comp-value.changed { background: #fffdf3; padding: 2px 6px; border-radius: 4px; color: #8a6d1b; }
+      .comp-value.removed { background: #fdecea; padding: 2px 6px; border-radius: 4px; color: #b3300f; text-decoration: line-through; }
+      .mode-section { display: none; }
+      .mode-section.show { display: block; }
+      @media (max-width: 768px) {
+        .comparison { grid-template-columns: 1fr; }
+      }
     </style>
   </head>
   <body>
@@ -69,75 +75,109 @@
       <img class="logo" src="https://assets.annoto.net/images/logo.svg" alt="Annoto" />
       <div class="titles">
         <h1>Kaltura Player Configurator</h1>
-        <p>Enable the Annoto plugin on a Kaltura V7 player by setting <code>confVars.versions</code> + the <code>annoto-loader</code> config via the Kaltura API.</p>
+        <p>Easy way to enable Annoto on a Kaltura V7 player</p>
       </div>
     </header>
-
     <main>
       <div class="card">
         <div class="banner warn">
-          Runs locally. Your <strong>admin secret</strong> is sent only to this local
-          server (127.0.0.1) to start a Kaltura session and is never stored. Use
-          <strong>Preview</strong> first — it changes nothing.
+          ⚠️ <strong>Security:</strong> This runs locally. Your admin secret is sent only to this local server (127.0.0.1) and is never stored.
         </div>
-
-        <h2>Kaltura account</h2>
+        <h2>Step 1: Kaltura Account Details</h2>
         <div class="row">
           <div>
-            <label>Partner ID</label>
+            <label>Partner ID *</label>
             <input id="partnerId" type="text" placeholder="2302901" />
           </div>
           <div>
-            <label>Admin secret</label>
-            <input id="adminSecret" type="password" placeholder="admin secret from KMC → Integration Settings" />
+            <label>Admin Secret *</label>
+            <input id="adminSecret" type="password" placeholder="From KMC → Integration Settings" />
           </div>
         </div>
         <label>Service URL</label>
         <input id="serviceUrl" type="text" value="https://cdnapisec.kaltura.com" />
-        <p class="hint">Default works for Kaltura SaaS. Change only for a dedicated/on-prem service URL.</p>
-
-        <h2 style="margin-top:20px">Player &amp; plugin</h2>
-        <label>Player / uiConf ID</label>
-        <input id="uiConfId" type="text" placeholder="56503472" />
-        <div class="check">
-          <input id="setConfig" type="checkbox" checked />
-          <label for="setConfig" style="margin:0">Also set the plugin config (clientId / region)</label>
-        </div>
-        <div class="row" id="configRow">
+        <p class="hint">Default for Kaltura SaaS. Change only for dedicated/on-prem services.</p>
+        <h2 style="margin-top: 24px;">Step 2: Select Player</h2>
+        <div class="row">
           <div>
-            <label>Annoto clientId (API key / JWT)</label>
-            <input id="clientId" type="text" placeholder="eyJhbGciOiJIUzI1NiJ9..." />
-          </div>
-          <div>
-            <label>Region</label>
-            <select id="region">
-              <option value="eu" selected>eu</option>
-              <option value="us">us</option>
-              <option value="staging">staging</option>
-            </select>
+            <label>Player / uiConf ID *</label>
+            <input id="uiConfId" type="text" placeholder="56503472" />
           </div>
         </div>
-        <div class="check">
-          <input id="cloneMode" type="checkbox" />
-          <label for="cloneMode" style="margin:0">Clone into a new dedicated player instead of editing this one</label>
-        </div>
-
         <div class="btns">
-          <button class="secondary" id="previewBtn">Preview</button>
-          <button class="primary" id="applyBtn">Apply</button>
+          <button class="check-btn" id="checkBtn">🔍 Check Current Status</button>
+        </div>
+        <div class="status-box" id="statusBox">
+          <div class="status-title">Current Annoto Configuration</div>
+          <div class="status-item">
+            <span class="icon" id="versionsIcon">❌</span>
+            <span class="label">Plugin Versions</span>
+            <span class="value" id="versionsValue">Not configured</span>
+          </div>
+          <div class="status-item">
+            <span class="icon" id="configIcon">❌</span>
+            <span class="label">Plugin Config</span>
+            <span class="value" id="configValue">Not configured</span>
+          </div>
+        </div>
+        <h2 style="margin-top: 24px;">Step 3: Choose What To Do</h2>
+        <label>Operation Mode *</label>
+        <select id="operationMode">
+          <optgroup label="Add or Update">
+            <option value="update-both" selected>✨ Update Both Versions & Config (Recommended)</option>
+            <option value="update-versions-only">📦 Update Only Plugin Versions</option>
+            <option value="update-config-only">⚙️ Update Only Plugin Config</option>
+          </optgroup>
+          <optgroup label="Remove">
+            <option value="clean-all">🗑️ Remove All Annoto Settings</option>
+            <option value="clean-versions-only">🗑️ Remove Only Plugin Versions</option>
+            <option value="clean-config-only">🗑️ Remove Only Plugin Config</option>
+          </optgroup>
+        </select>
+        <p class="hint" id="modeHint">This will add Annoto to both the plugin versions and config.</p>
+        <div class="mode-section show" id="configSection">
+          <div class="row" style="margin-top: 16px;">
+            <div>
+              <label>Annoto API Key (clientId)</label>
+              <input id="clientId" type="text" placeholder="eyJhbGciOiJIUzI1NiJ9..." />
+            </div>
+            <div>
+              <label>Region</label>
+              <select id="region">
+                <option value="eu" selected>🇪🇺 Europe (eu)</option>
+                <option value="us">🇺🇸 United States (us)</option>
+                <option value="staging">🧪 Staging (staging)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="check" style="margin-top: 20px;">
+          <input id="cloneMode" type="checkbox" />
+          <label for="cloneMode" style="margin:0">📋 Clone into a new dedicated player instead of modifying this one (Safer for testing)</label>
+        </div>
+        <div class="btns" style="margin-top: 24px;">
+          <button class="secondary" id="previewBtn">👁️ Preview Changes</button>
+          <button class="primary" id="applyBtn">✅ Apply Changes</button>
         </div>
       </div>
-
       <div class="card out" id="output">
-        <h2>Result</h2>
+        <h2>Preview & Results</h2>
         <div id="resultBanner"></div>
-        <div id="resultView"></div>
-        <details class="raw"><summary>Raw response</summary><pre id="resultBody"></pre></details>
+        <div id="comparisonView"></div>
+        <div id="appliedView"></div>
+        <details style="margin-top: 16px;"><summary style="font-size: 12px; color: var(--muted); cursor: pointer;">📋 View Raw Response</summary><pre id="resultBody" style="font-size: 11px;"></pre></details>
       </div>
     </main>
-
     <script>
       const $ = (id) => document.getElementById(id);
+      const modes = {
+        'update-both': { label: 'Update Both', needs: ['clientId'], hint: 'Will add Annoto to both the plugin versions and config.' },
+        'update-versions-only': { label: 'Versions Only', needs: [], hint: 'Will add the Annoto plugin to the bundler versions only. You can configure settings in KMC later.' },
+        'update-config-only': { label: 'Config Only', needs: ['clientId'], hint: 'Will update only the Annoto plugin configuration. The version must already be set.' },
+        'clean-all': { label: 'Remove All', needs: [], hint: 'Will completely remove all Annoto settings from this player.' },
+        'clean-versions-only': { label: 'Remove Versions', needs: [], hint: 'Will remove Annoto from the plugin versions.' },
+        'clean-config-only': { label: 'Remove Config', needs: [], hint: 'Will remove the Annoto configuration.' }
+      };
       function body() {
         return {
           serviceUrl: $('serviceUrl').value,
@@ -146,110 +186,162 @@
           uiConfId: $('uiConfId').value,
           clientId: $('clientId').value,
           region: $('region').value,
-          setConfig: $('setConfig').checked,
-          mode: $('cloneMode').checked ? 'clone' : 'update'
+          operationMode: $('operationMode').value,
+          cloneMode: $('cloneMode').checked
         };
       }
       function esc(s) {
         return String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
       }
-      function chip(text, kind) { return '<span class="chip ' + kind + '">' + esc(text) + '</span>'; }
-
-      function renderPreview(json) {
-        const p = json.plan;
-        let h = '';
-        h += '<div class="rv-player">Player: <strong>' + esc(p.player.name || '—') + '</strong> <span class="muted">(uiConf ' + esc(p.player.id) + ')</span></div>';
-        h += '<div class="rv-title">Annoto will add / update</div>';
-
-        const cv = p.confVars;
-        const cvState = !cv.changed ? 'same' : (cv.before == null ? 'add' : 'diff');
-        const cvTag = cvState === 'add' ? 'new' : (cvState === 'diff' ? 'change' : 'already set');
-        h += '<div class="rv-row ' + cvState + '">'
-          + '<span class="rv-key">confVars.versions["' + esc(cv.pluginKey) + '"]</span>'
-          + '<span class="rv-val">' + (cvState === 'diff' ? '<span class="was">' + esc(cv.before) + '</span> ' : '') + chip(cv.after, cvState === 'same' ? 'same' : 'add') + '</span>'
-          + '<span class="rv-tag">' + cvTag + '</span></div>';
-
-        if (p.config) {
-          const cf = p.config;
-          const beforeStr = cf.before ? JSON.stringify(cf.before) : null;
-          const afterStr = JSON.stringify(cf.after);
-          const cfState = beforeStr === afterStr ? 'same' : (cf.before ? 'diff' : 'add');
-          const cfTag = cfState === 'add' ? 'new' : (cfState === 'diff' ? 'change' : 'already set');
-          let valHtml = '';
-          Object.keys(cf.after).forEach((k) => { valHtml += chip(k + ': ' + cf.after[k], cfState === 'same' ? 'same' : 'add'); });
-          h += '<div class="rv-row ' + cfState + '">'
-            + '<span class="rv-key">config.plugins["' + esc(cf.pluginKey) + '"]</span>'
-            + '<span class="rv-val">' + valHtml + '</span>'
-            + '<span class="rv-tag">' + cfTag + '</span></div>';
+      $('operationMode').addEventListener('change', (e) => {
+        const mode = modes[e.target.value];
+        $('modeHint').textContent = mode.hint;
+        const needsConfig = mode.needs.includes('clientId');
+        $('configSection').className = 'mode-section' + (needsConfig ? ' show' : '');
+        $('clientId').required = needsConfig;
+      });
+      $('checkBtn').addEventListener('click', async () => {
+        const params = new URLSearchParams({
+          serviceUrl: $('serviceUrl').value,
+          partnerId: $('partnerId').value,
+          adminSecret: $('adminSecret').value,
+          uiConfId: $('uiConfId').value
+        });
+        try {
+          $('checkBtn').disabled = true;
+          const res = await fetch('/api/check?' + params);
+          const json = await res.json();
+          if (!json.ok) {
+            showError(json.errors);
+            return;
+          }
+          $('statusBox').className = 'status-box show';
+          $('versionsIcon').textContent = json.annoto.hasVersions ? '✅' : '❌';
+          $('versionsValue').textContent = json.annoto.versionsValue || 'Not configured';
+          $('configIcon').textContent = json.annoto.hasConfig ? '✅' : '❌';
+          $('configValue').textContent = json.annoto.hasConfig ? '(Set)' : 'Not configured';
+          const banner = $('resultBanner');
+          if (json.annoto.isConfigured) {
+            banner.className = 'banner info';
+            banner.textContent = '📝 Annoto is already configured on this player';
+          } else {
+            banner.className = 'banner warn';
+            banner.textContent = '⚠️ Annoto is not yet configured on this player';
+          }
+          banner.style.display = 'block';
+        } catch (e) {
+          showError([String(e)]);
+        } finally {
+          $('checkBtn').disabled = false;
         }
-        h += '<div class="rv-note">Nothing has been changed yet — click <strong>Apply</strong> to write this.</div>';
-        return h;
-      }
-
-      function renderApply(json) {
-        let h = '';
-        if (json.cloned) {
-          h += '<div class="rv-player">Created new player: <strong>' + esc(json.cloned.name || '—') + '</strong> <span class="muted">(uiConf ' + esc(json.cloned.id) + ')</span></div>';
-        } else {
-          h += '<div class="rv-player">Updated player <span class="muted">(uiConf ' + esc(json.targetId) + ')</span></div>';
-        }
-        h += '<div class="rv-title">Applied</div>';
-        h += '<div class="rv-row add"><span class="rv-key">confVars.versions["' + esc(json.applied.confVarsPluginKey) + '"]</span>'
-          + '<span class="rv-val">' + chip(json.applied.version, 'add') + '</span>'
-          + '<span class="rv-tag">' + (json.verified.versionsPresent ? '✓ verified' : 'check') + '</span></div>';
-        if (json.applied.setConfig) {
-          h += '<div class="rv-row add"><span class="rv-key">config.plugins["' + esc(json.applied.configPluginKey) + '"]</span>'
-            + '<span class="rv-val">' + chip('set', 'add') + '</span>'
-            + '<span class="rv-tag">✓</span></div>';
-        }
-        return h;
-      }
-
-      function show(json) {
+      });
+      function showError(errors) {
         $('output').style.display = 'block';
         const banner = $('resultBanner');
-        let view = '';
-        if (!json.ok) {
-          banner.className = 'banner err';
-          banner.textContent = 'Error';
-          view = '<ul class="rv-err">' + (json.errors || ['Unknown error']).map((e) => '<li>' + esc(e) + '</li>').join('') + '</ul>';
-        } else if (json.plan) {
-          banner.className = 'banner';
-          banner.textContent = 'Preview — nothing changed yet';
-          view = renderPreview(json);
-        } else if (json.applied) {
-          banner.className = 'banner ok';
-          banner.textContent = 'Applied ✓';
-          view = renderApply(json);
-        }
-        $('resultView').innerHTML = view;
-        $('resultBody').textContent = JSON.stringify(json, null, 2);
+        banner.className = 'banner err';
+        banner.innerHTML = '❌ ' + errors.map(esc).join('<br>');
         $('output').scrollIntoView({ behavior: 'smooth' });
       }
+      function showComparison(json) {
+        if (!json.plan) return '';
+        const p = json.plan;
+        const before = p.before;
+        const after = p.after;
+        let html = '<h3 style="font-size: 13px; margin: 14px 0 10px; font-weight: 600;">What Will Change:</h3>';
+        html += '<div class="comparison">';
+        html += '<div class="comp-box">';
+        html += '<div class="comp-header">Before</div>';
+        html += '<div class="comp-item">';
+        html += '<span class="comp-key">Plugin Versions:</span>';
+        html += '<span class="comp-value' + (before.hasVersions ? '' : ' empty') + '">' + (before.versionsValue || '(not set)') + '</span>';
+        html += '</div>';
+        html += '<div class="comp-item">';
+        html += '<span class="comp-key">Plugin Config:</span>';
+        html += '<span class="comp-value' + (before.hasConfig ? '' : ' empty') + '">' + (before.hasConfig ? '(configured)' : '(not set)') + '</span>';
+        html += '</div>';
+        html += '</div>';
+        html += '<div class="comp-box">';
+        html += '<div class="comp-header">After</div>';
+        html += '<div class="comp-item">';
+        html += '<span class="comp-key">Plugin Versions:</span>';
+        const versionsAfter = after.confVars.versions?.['playkit-annoto-loader'] || null;
+        const versionsClass = !before.hasVersions && versionsAfter ? ' new' : (versionsAfter && before.versionsValue !== versionsAfter ? ' changed' : (!versionsAfter && before.hasVersions ? ' removed' : ''));
+        html += '<span class="comp-value' + versionsClass + '">' + (versionsAfter || '(removed)') + '</span>';
+        html += '</div>';
+        html += '<div class="comp-item">';
+        html += '<span class="comp-key">Plugin Config:</span>';
+        const configAfter = after.config.plugins?.['annoto-loader'];
+        const configClass = !before.hasConfig && configAfter ? ' new' : (!configAfter && before.hasConfig ? ' removed' : '');
+        html += '<span class="comp-value' + configClass + '">' + (configAfter ? '(configured)' : '(removed)') + '</span>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+        return html;
+      }
+      function showApplied(json) {
+        let html = '<h3 style="font-size: 13px; margin: 14px 0 10px; font-weight: 600;">✅ Applied Successfully</h3>';
+        if (json.cloned) {
+          html += '<div class="banner ok" style="margin-bottom: 14px;">✨ Created new player: <strong>' + esc(json.cloned.name || json.cloned.id) + '</strong></div>';
+        }
+        html += '<div class="comparison">';
+        html += '<div class="comp-box"><div class="comp-header">Changes Made</div>';
+        if (json.applied.versionsChanged) {
+          html += '<div class="comp-item"><span class="comp-key">Versions:</span><span class="comp-value new">Updated ✓</span></div>';
+        }
+        if (json.applied.configChanged) {
+          html += '<div class="comp-item"><span class="comp-key">Config:</span><span class="comp-value new">Updated ✓</span></div>';
+        }
+        html += '</div>';
+        html += '<div class="comp-box"><div class="comp-header">Verification</div>';
+        html += '<div class="comp-item"><span class="comp-key">Versions:</span><span class="comp-value' + (json.verified.hasVersions ? ' new' : '') + '">' + (json.verified.versionsValue || 'Not set') + '</span></div>';
+        html += '<div class="comp-item"><span class="comp-key">Config:</span><span class="comp-value' + (json.verified.hasConfig ? ' new' : '') + '">' + (json.verified.hasConfig ? '✓ Configured' : '(not set)') + '</span></div>';
+        html += '</div>';
+        html += '</div>';
+        return html;
+      }
+      const BUNDLER_KEY = 'playkit-annoto-loader';
+      const CONFIG_KEY = 'annoto-loader';
       async function call(path) {
-        const btns = [$('previewBtn'), $('applyBtn')];
+        const btns = [$('previewBtn'), $('applyBtn'), $('checkBtn')];
         btns.forEach((b) => (b.disabled = true));
         try {
+          $('output').style.display = 'block';
+          $('resultBanner').innerHTML = '';
+          $('comparisonView').innerHTML = '';
+          $('appliedView').innerHTML = '';
           const res = await fetch(path, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body())
           });
           const json = await res.json();
-          show(json);
+          if (!json.ok) {
+            showError(json.errors);
+          } else if (json.plan) {
+            $('resultBanner').className = 'banner warn';
+            $('resultBanner').textContent = '👁️ Preview — Nothing changed yet. Click Apply to make these changes.';
+            $('comparisonView').innerHTML = showComparison(json);
+          } else if (json.applied !== undefined) {
+            $('resultBanner').className = 'banner ok';
+            $('resultBanner').textContent = '✅ All changes applied successfully!';
+            $('appliedView').innerHTML = showApplied(json);
+          }
+          $('resultBody').textContent = JSON.stringify(json, null, 2);
         } catch (e) {
-          show({ ok: false, errors: [String(e)] });
+          showError([String(e)]);
         } finally {
           btns.forEach((b) => (b.disabled = false));
+          $('output').scrollIntoView({ behavior: 'smooth' });
         }
       }
-      $('setConfig').addEventListener('change', () => {
-        $('configRow').style.opacity = $('setConfig').checked ? '1' : '.5';
-      });
       $('previewBtn').addEventListener('click', () => call('/api/preview'));
       $('applyBtn').addEventListener('click', () => {
-        if (confirm('Apply changes to the player via the Kaltura API?')) call('/api/apply');
+        if (confirm('Ready to apply these changes to the player via the Kaltura API?')) {
+          call('/api/apply');
+        }
       });
+      modes[$('operationMode').value];
+      $('operationMode').dispatchEvent(new Event('change'));
     </script>
   </body>
 </html>
